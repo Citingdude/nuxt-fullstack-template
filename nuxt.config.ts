@@ -32,4 +32,10 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  vite: {
+    ssr: {
+      external: ['bcrypt'],
+    },
+  },
 })

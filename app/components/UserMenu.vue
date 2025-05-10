@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { AuthService } from '~/features/auth/services/auth.service'
 
 defineProps<{
   collapsed?: boolean
@@ -146,6 +147,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
 }], [{
   label: 'Log out',
   icon: 'i-lucide-log-out',
+  onSelect: async () => await AuthService.logout(),
 }]]))
 </script>
 
