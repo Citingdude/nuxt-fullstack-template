@@ -2,6 +2,10 @@
 import type { Period, Range } from '~/types'
 import { sub } from 'date-fns'
 
+definePageMeta({
+  middleware: 'protected',
+})
+
 const { isNotificationsSlideoverOpen } = useDashboard()
 
 const items = [[{
