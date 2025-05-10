@@ -2,7 +2,7 @@
 withDefaults(defineProps<{
   count?: number
 }>(), {
-  count: 0
+  count: 0,
 })
 
 const open = ref(false)
@@ -17,7 +17,7 @@ async function onSubmit() {
   <UModal
     v-model:open="open"
     :title="`Delete ${count} customer${count > 1 ? 's' : ''}`"
-    :description="`Are you sure, this action cannot be undone.`"
+    description="Are you sure, this action cannot be undone."
   >
     <slot />
 

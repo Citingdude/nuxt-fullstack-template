@@ -7,20 +7,20 @@ const teams = ref([{
   label: 'Nuxt',
   avatar: {
     src: 'https://github.com/nuxt.png',
-    alt: 'Nuxt'
-  }
+    alt: 'Nuxt',
+  },
 }, {
   label: 'NuxtHub',
   avatar: {
     src: 'https://github.com/nuxt-hub.png',
-    alt: 'NuxtHub'
-  }
+    alt: 'NuxtHub',
+  },
 }, {
   label: 'NuxtLabs',
   avatar: {
     src: 'https://github.com/nuxtlabs.png',
-    alt: 'NuxtLabs'
-  }
+    alt: 'NuxtLabs',
+  },
 }])
 const selectedTeam = ref(teams.value[0])
 
@@ -29,13 +29,13 @@ const items = computed(() => {
     ...team,
     onSelect() {
       selectedTeam.value = team
-    }
+    },
   })), [{
     label: 'Create team',
-    icon: 'i-lucide-circle-plus'
+    icon: 'i-lucide-circle-plus',
   }, {
     label: 'Manage teams',
-    icon: 'i-lucide-cog'
+    icon: 'i-lucide-cog',
   }]]
 })
 </script>
@@ -50,7 +50,7 @@ const items = computed(() => {
       v-bind="{
         ...selectedTeam,
         label: collapsed ? undefined : selectedTeam?.label,
-        trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
+        trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down',
       }"
       color="neutral"
       variant="ghost"
@@ -59,7 +59,7 @@ const items = computed(() => {
       class="data-[state=open]:bg-elevated"
       :class="[!collapsed && 'py-2']"
       :ui="{
-        trailingIcon: 'text-dimmed'
+        trailingIcon: 'text-dimmed',
       }"
     />
   </UDropdownMenu>

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { breakpointsTailwind } from '@vueuse/core'
 import type { Mail } from '~/types'
+import { breakpointsTailwind } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
 
 const tabItems = [{
   label: 'All',
-  value: 'all'
+  value: 'all',
 }, {
   label: 'Unread',
-  value: 'unread'
+  value: 'unread',
 }]
 const selectedTab = ref('all')
 
@@ -33,7 +33,7 @@ const isMailPanelOpen = computed({
     if (!value) {
       selectedMail.value = null
     }
-  }
+  },
 })
 
 // Reset selected mail if it's not in the filtered mails
