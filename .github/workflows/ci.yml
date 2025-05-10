@@ -9,26 +9,22 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [22]
+        bun: [latest] # Use the latest version of Bun
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node }}
-          cache: pnpm
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          export PATH=$HOME/.bun/bin:$PATH
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Lint
-        run: pnpm run lint
+        run: bun run lint
 
       - name: Typecheck
-        run: pnpm run typecheck
+        run: bun run typecheck
