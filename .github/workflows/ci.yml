@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        bun: [latest] # Use the latest version of Bun
+        bun: [latest]
 
     steps:
       - name: Checkout
@@ -18,7 +18,7 @@ jobs:
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
-          export PATH=$HOME/.bun/bin:$PATH
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH  # Adds Bun to the PATH for the current job
 
       - name: Install dependencies
         run: bun install
