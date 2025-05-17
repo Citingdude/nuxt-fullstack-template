@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { FILE_TYPE } from '~~/shared/constants/file/fileTypes.constant'
+
 const items = [
   [
     {
@@ -12,9 +14,7 @@ const { data, refresh } = await useFetch('/api/media')
 
 const files = ref<File[]>([])
 
-async function uploadImage() {
-  const file = files.value[0]
-
+async function uploadImage(file: File) {
   const formData = new FormData()
 
   if (!file) {
@@ -30,22 +30,6 @@ async function uploadImage() {
   })
 
   await refresh()
-}
-
-function handleChange(event: Event) {
-  const input = event.target
-
-  if (!input) {
-    return
-  }
-
-  if (!(input instanceof HTMLInputElement)) {
-    return
-  }
-
-  const filesAsArray = Array.from(input?.files || [])
-
-  files.value = files.value.concat(filesAsArray)
 }
 </script>
 
@@ -73,15 +57,16 @@ function handleChange(event: Event) {
           </li>
         </ul>
 
-        <form @submit.prevent="uploadImage">
-          <input
-            id="image"
-            type="file"
-            name="image"
-            @change="handleChange"
-          >
-          <UButton type="submit" label="Upload" size="md" />
-        </form>
+        <FileUpload
+          class="max-w-2xl"
+          :accepted-files="[
+            FILE_TYPE.JPEG,
+            FILE_TYPE.JPG,
+            FILE_TYPE.PNG,
+            FILE_TYPE.WEBP,
+          ]"
+          @upload-file="(file) => uploadImage(file)"
+        />
 
         <div class="grid grid-cols-4 gap-4">
           <img
