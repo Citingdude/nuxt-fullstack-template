@@ -31,6 +31,19 @@ async function uploadImage(file: File) {
 
   await refresh()
 }
+
+async function deleteImage(id: number) {
+  try {
+    await $fetch(`/api/media/${id}`, {
+      method: 'DELETE',
+    })
+
+    await refresh()
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
@@ -69,13 +82,25 @@ async function uploadImage(file: File) {
         />
 
         <div class="grid grid-cols-4 gap-4">
-          <img
+          <div
             v-for="image in data?.media"
             :key="image.id"
-            class="size-full aspect-5/3 object-cover"
-            :src="image.url || undefined"
-            alt=""
+            class="flex relative"
           >
+            <img
+              class="size-full aspect-5/3 object-cover"
+              :src="image.url || undefined"
+              alt=""
+            >
+
+            <UButton
+              class="absolute top-2 right-2"
+              icon="i-lucide-trash"
+              color="error"
+              variant="subtle"
+              @click="deleteImage(image.id)"
+            />
+          </div>
         </div>
       </div>
     </template>

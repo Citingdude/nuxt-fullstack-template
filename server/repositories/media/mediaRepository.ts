@@ -33,4 +33,10 @@ export class MediaRepository {
 
     return media
   }
+
+  async deleteById(id: number): Promise<void> {
+    const db = useDb()
+
+    await db.delete(media).where(eq(media.id, id))
+  }
 }

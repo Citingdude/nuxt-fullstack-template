@@ -1,6 +1,6 @@
 import type { Media, NewMedia } from '~~/server/db/schema/media'
 import type { MediaRepository } from '~~/server/repositories/media/mediaRepository'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, unlink, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createError } from 'h3'
 
@@ -55,5 +55,26 @@ export class MediaService {
     return {
       imageId: newImageId.id,
     }
+  }
+
+  async deleteMediaById(id: number): Promise<void> {
+    const mediaItem = await this.mediaRepository.findById(id)
+
+    if (!mediaItem) {
+      throw createError({ statusCode: 404, statusMessage: 'Media not found' })
+    }
+
+    try {
+      if (!mediaItem.filePath) {
+        return
+      }
+
+      await unlink(mediaItem.filePath)
+    }
+    catch (fsError) {
+      console.warn('Failed to delete file from filesystem:', fsError)
+    }
+
+    await this.mediaRepository.deleteById(id)
   }
 }
