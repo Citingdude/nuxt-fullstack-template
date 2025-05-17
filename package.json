@@ -47,9 +47,14 @@
   "pnpm": {
     "ignoredBuiltDependencies": [
       "@parcel/watcher",
+      "@tailwindcss/oxide",
       "esbuild",
       "maplibre-gl",
+      "unrs-resolver",
       "vue-demi"
+    ],
+    "onlyBuiltDependencies": [
+      "bcrypt"
     ]
   },
   "resolutions": {
