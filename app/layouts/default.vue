@@ -15,7 +15,7 @@ const links = [[
   },
   {
     label: 'Media',
-    icon: 'i-lucide-house',
+    icon: 'i-lucide-image',
     to: '/media',
     onSelect: () => {
       open.value = false
