@@ -12,8 +12,6 @@ const items = [
 
 const { data, refresh } = await useFetch('/api/media')
 
-const files = ref<File[]>([])
-
 async function uploadImage(file: File) {
   const formData = new FormData()
 
@@ -64,12 +62,6 @@ async function deleteImage(id: number) {
 
     <template #body>
       <div class="flex flex-col gap-8">
-        <ul class="list-disc">
-          <li v-for="file in files" :key="file.name">
-            {{ file.name }}
-          </li>
-        </ul>
-
         <FileUpload
           class="max-w-2xl"
           :accepted-files="[
