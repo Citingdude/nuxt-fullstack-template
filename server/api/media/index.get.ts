@@ -1,10 +1,8 @@
-import { MediaRepository } from '~~/server/repositories/media/mediaRepository'
-import { MediaService } from '~~/server/services/media/mediaService'
-
-const mediaRepository = new MediaRepository()
-const mediaService = new MediaService(mediaRepository)
+import { useMediaService } from '~~/server/services/media/mediaService'
 
 export default defineEventHandler(async () => {
+  const mediaService = useMediaService()
+
   try {
     const media = await mediaService.getAllMedia()
 

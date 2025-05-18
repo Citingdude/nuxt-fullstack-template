@@ -1,12 +1,10 @@
 import type { H3Event } from 'h3'
 import { createError } from 'h3'
-import { MediaRepository } from '~~/server/repositories/media/mediaRepository'
-import { MediaService } from '~~/server/services/media/mediaService'
-
-const mediaRepository = new MediaRepository()
-const mediaService = new MediaService(mediaRepository)
+import { useMediaService } from '~~/server/services/media/mediaService'
 
 export default defineEventHandler(async (event: H3Event) => {
+  const mediaService = useMediaService()
+
   const id = getRouterParam(event, 'id')
 
   if (!id) {

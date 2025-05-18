@@ -1,17 +1,16 @@
+// ~/server/repositories/media/useMediaRepository.ts
 import type { Media, NewMedia } from '~~/server/db/schema/media'
 import { asc, eq } from 'drizzle-orm'
 import { media } from '~~/server/db/schema/media'
 
-export class MediaRepository {
-  async getAll(): Promise<Media[]> {
-    const db = useDb()
+export function useMediaRepository() {
+  const db = useDb()
 
+  const getAll = async (): Promise<Media[]> => {
     return db.select().from(media).orderBy(asc(media.uploadDate))
   }
 
-  async insert(imageData: NewMedia): Promise<{ id: number }> {
-    const db = useDb()
-
+  const insert = async (imageData: NewMedia): Promise<{ id: number }> => {
     const [newMediaId] = await db
       .insert(media)
       .values(imageData)
@@ -24,19 +23,20 @@ export class MediaRepository {
     return newMediaId
   }
 
-  async findById(id: number): Promise<Media | undefined> {
-    const db = useDb()
-
-    const media = await db.query.media.findFirst({
-      where: media => eq(media.id, id),
+  const findById = async (id: number): Promise<Media | undefined> => {
+    return db.query.media.findFirst({
+      where: m => eq(m.id, id),
     })
-
-    return media
   }
 
-  async deleteById(id: number): Promise<void> {
-    const db = useDb()
-
+  const deleteById = async (id: number): Promise<void> => {
     await db.delete(media).where(eq(media.id, id))
+  }
+
+  return {
+    getAll,
+    insert,
+    findById,
+    deleteById,
   }
 }

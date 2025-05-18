@@ -1,8 +1,9 @@
+// ~/server/services/media/useMediaService.ts
 import type { Media, NewMedia } from '~~/server/db/schema/media'
-import type { MediaRepository } from '~~/server/repositories/media/mediaRepository'
 import { mkdir, unlink, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createError } from 'h3'
+import { useMediaRepository } from '~~/server/repositories/media/mediaRepository'
 
 interface UploadAndSaveImageParams {
   fileBuffer: Buffer
@@ -10,18 +11,14 @@ interface UploadAndSaveImageParams {
   mimeType?: string
 }
 
-export class MediaService {
-  private mediaRepository: MediaRepository
+export function useMediaService() {
+  const mediaRepository = useMediaRepository()
 
-  constructor(mediaRepository: MediaRepository) {
-    this.mediaRepository = mediaRepository
+  const getAllMedia = async (): Promise<Media[]> => {
+    return mediaRepository.getAll()
   }
 
-  async getAllMedia(): Promise<Media[]> {
-    return this.mediaRepository.getAll()
-  }
-
-  async uploadAndSaveImage(params: UploadAndSaveImageParams): Promise<{ imageId: number }> {
+  const uploadAndSaveImage = async (params: UploadAndSaveImageParams): Promise<{ imageId: number }> => {
     const { fileBuffer, originalFilename, mimeType } = params
 
     const newFilename = `${Date.now()}-${originalFilename}`
@@ -50,31 +47,35 @@ export class MediaService {
       size: fileBuffer.length,
     }
 
-    const newImageId = await this.mediaRepository.insert(imageData)
+    const newImageId = await mediaRepository.insert(imageData)
 
     return {
       imageId: newImageId.id,
     }
   }
 
-  async deleteMediaById(id: number): Promise<void> {
-    const mediaItem = await this.mediaRepository.findById(id)
+  const deleteMediaById = async (id: number): Promise<void> => {
+    const mediaItem = await mediaRepository.findById(id)
 
     if (!mediaItem) {
       throw createError({ statusCode: 404, statusMessage: 'Media not found' })
     }
 
     try {
-      if (!mediaItem.filePath) {
-        return
+      if (mediaItem.filePath) {
+        await unlink(mediaItem.filePath)
       }
-
-      await unlink(mediaItem.filePath)
     }
     catch (fsError) {
       console.warn('Failed to delete file from filesystem:', fsError)
     }
 
-    await this.mediaRepository.deleteById(id)
+    await mediaRepository.deleteById(id)
+  }
+
+  return {
+    getAllMedia,
+    uploadAndSaveImage,
+    deleteMediaById,
   }
 }
