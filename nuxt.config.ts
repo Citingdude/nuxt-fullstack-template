@@ -18,6 +18,15 @@ export default defineNuxtConfig({
     },
   },
 
+  runtimeConfig: {
+    storageProvider: '',
+    s3Region: '',
+    s3Endpoint: '',
+    s3AccessKey: '',
+    s3SecretKey: '',
+    s3Bucket: '',
+  },
+
   future: {
     compatibilityVersion: 4,
   },

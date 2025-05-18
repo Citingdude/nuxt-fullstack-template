@@ -15,7 +15,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   try {
-    mediaService.deleteMediaById(Number.parseInt(id))
+    await mediaService.deleteMediaById(Number.parseInt(id))
 
     return { message: 'File deleted and reference saved' }
   }
